@@ -3,7 +3,9 @@ from flask import (Response, request, make_response, render_template, jsonify)
 from flask import current_app as app
 
 from .models import Product
-from .handlers import (create_product_handler, get_handler, get_all_products_handler, delete_product_handler)
+from .handlers import (create_product_handler, get_handler,
+                       get_all_products_handler, delete_product_handler,
+                       put_handler)
 
 
 @app.errorhandler(404)
@@ -41,10 +43,12 @@ def product_getter_setter(product_id):
     app.logger.info("api.product_getter_setter")
     
     if request.method == 'PUT':
-        pass
+        if request.is_json:
+            return put_handler(product_id, request.json)
+        else:
+            return make_response("Invalid payload", http.BAD_REQUEST)
     elif request.method == 'GET':
             return get_handler(product_id)
-   
     else:
         return make_response("Method not allower", http.METHOD_NOT_ALLOWED)
 

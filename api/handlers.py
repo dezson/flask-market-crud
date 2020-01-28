@@ -60,3 +60,19 @@ def delete_product_handler(id):
     db.session.delete(record)
     db.session.commit()
     return make_response("Item deleted", http.NO_CONTENT)
+
+
+def put_handler(id, payload):
+    app.logger.info("api.put_handler")
+    try:
+        record = Product.query.filter(Product.id == id).one()
+    except:
+        return make_response("Item does not exist", http.NOT_FOUND)
+
+    for key, value in payload.items():
+        if key not in record.__dict__:
+            return make_response("Invalid payload", http.BAD_REQUEST)
+        setattr(record, key, value)
+
+    db.session.commit()
+    return make_response(record.to_dict(), http.OK)
