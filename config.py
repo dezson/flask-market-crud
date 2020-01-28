@@ -3,7 +3,7 @@ import os
 class Config:
     # General
     TESTING = True
-    FLASK_DEBUG = True
+    DEBUG = True
     THREADS_PER_PAGE = 2
     SECRET_KEY = os.environ.get('SECRET_KEY')
    
