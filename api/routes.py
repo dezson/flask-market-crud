@@ -3,7 +3,7 @@ from flask import (Response, request, make_response, render_template, jsonify)
 from flask import current_app as app
 
 from .models import Product
-from .handlers import (create_product_handler, get_handler, get_all_products_handler)
+from .handlers import (create_product_handler, get_handler, get_all_products_handler, delete_product_handler)
 
 
 @app.errorhandler(404)
@@ -53,3 +53,8 @@ def product_getter_setter(product_id):
 def get_all_products():
     app.logger.info("api.get_all_products")
     return get_all_products_handler()
+
+@app.route("/v1/product/<string:product_id>", methods=["DELETE"])
+def delete_product(product_id):
+    app.logger.info("api.delete_product")
+    return delete_product_handler(product_id)

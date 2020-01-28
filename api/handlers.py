@@ -48,3 +48,15 @@ def get_all_products_handler():
 
     app.logger.info(ret)
     return make_response(jsonify(ret), http.OK)
+
+
+def delete_product_handler(id):
+    app.logger.info("api.delete_product_handler")
+    try:
+        record = Product.query.filter(Product.id == id).one()
+    except:
+        return make_response("Item does not exist", http.NOT_FOUND)
+    app.logger.info(record)
+    db.session.delete(record)
+    db.session.commit()
+    return make_response("Item deleted", http.NO_CONTENT)
